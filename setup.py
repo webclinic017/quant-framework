@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='Quant Framework',
+    name='quant-framework',
     version='0.0.1',
     packages=find_packages(),
     scripts=[],
