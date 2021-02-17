@@ -138,5 +138,6 @@ dmypy.json
 cython_debug/
 
 # Other stuff
+.pypirc
 .DS_Store
 pip-wheel-metadata/
