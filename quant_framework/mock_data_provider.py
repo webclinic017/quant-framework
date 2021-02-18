@@ -1,17 +1,15 @@
 from datetime import date, timedelta
 
-from quant_framework.data_providers.data_provider import DataProvider
-
-class MockDataProvider(DataProvider):
-    """
+class MockDataProvider():
+    '''
     A data provider that mimics a 3rd party data provider like Polygon.io, Bloomberg, etc.
     All functions return the same static data regardless of provided parameters
-    """
+    '''
 
     def fetch_ticker_eod(self, ticker, date):
-        """
+        '''
         Simulates fetching the price and volume data for a ticker for a specific date
-        """
+        '''
         return {
             'date': date.strftime('%Y-%m-%d'),
             'open': 500,
@@ -23,9 +21,9 @@ class MockDataProvider(DataProvider):
         }
 
     def fetch_ticker_eod_range(self, ticker, start, end):
-        """
+        '''
         Simulates fetching the price and volume data for a ticker for a range of dates
-        """
+        '''
 
         delta = end - start
         
