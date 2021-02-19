@@ -22,6 +22,9 @@ setup(
         ],
     },
     install_requires=[
+        'croniter==1.0.6',
+        'Flask==1.1.2',
+        'python-dateutil==2.8.1',
         'SQLAlchemy==1.3.23'
     ]
 )

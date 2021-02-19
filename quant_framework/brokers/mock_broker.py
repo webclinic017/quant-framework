@@ -1,4 +1,6 @@
-class MockBroker():
+from quant_framework.brokers.broker import Broker
+
+class MockBroker(Broker):
     '''
     A broker that mimics the buying and selling of shares on a public market based 
     on the historical price of the asset at the speficied timestamp
@@ -8,6 +10,7 @@ class MockBroker():
     This is intended to be used while backtesting so that you don't accidentally create buy
     or sell orders with an actual broker
     '''
+    name = 'mock_broker'
 
     def __init__(self):
         self.portfolio = {}  # The positions currently in the mock brokerage account
@@ -46,3 +49,9 @@ class MockBroker():
 
         amount = self.portfolio[ticker]
         self.sell(ticker, amount, price)
+
+    def get_portfolio(self):
+        return self.portfolio
+
+    def get_total_cash(self):
+        return self.allowance
