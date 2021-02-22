@@ -1,2 +1,3 @@
 from quant_framework.data_providers.data_provider import DataProvider
+from quant_framework.data_providers.eod_historical_data import EODHistoricalData
 from quant_framework.data_providers.mock_data_provider import MockDataProvider

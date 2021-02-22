@@ -17,7 +17,7 @@ class DataProvider(ABC):
         pass
 
     @abstractmethod
-    def fetch_ticker_data(self, ticker, date):
+    def fetch_ticker_data(self, ticker, req_date):
         pass
 
     @abstractmethod

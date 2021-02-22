@@ -66,7 +66,6 @@ class Strategy(ABC):
     def buy(self, ticker, amount):
         broker = self.context['broker']
         ticker_data = self.fetch_ticker_data(ticker)
-
         broker.buy(ticker, amount, ticker_data['close'])
     
     @final

@@ -3,14 +3,17 @@ import importlib.machinery
 import os
 import sys
 
+from quant_framework.internal.configuration import conf
+
 from quant_framework.strategies.strategy import Strategy as StrategyInterface
 from quant_framework.internal.models import Strategy as StrategyModel
 
 
-def fetch_strategies_from_directory(strategy_directory):
+def fetch_user_strategies():
     '''
     Traverses the specified strategy_directory, and returns every class that inherits from the 'Strategy' interface
     '''
+    strategy_directory = conf['strategy_folder']
 
     for f in os.listdir(strategy_directory):
         if f.endswith('.py'):

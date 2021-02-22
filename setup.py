@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='quant-framework',
-    version='0.0.2',
+    version='0.0.3',
     author='Brendan Geck',
     author_email='bpgeck@gmail.com',
     url='https://github.com/brendangeck/quant-framework',
@@ -24,6 +24,7 @@ setup(
     install_requires=[
         'croniter==1.0.6',
         'Flask==1.1.2',
+        'psycopg2-binary==2.8.6',
         'python-dateutil==2.8.1',
         'SQLAlchemy==1.3.23'
     ]

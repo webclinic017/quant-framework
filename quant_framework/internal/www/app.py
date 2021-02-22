@@ -24,9 +24,7 @@ def create_app(engine):
         # Convert results to a list of dictionaries
         results_fmt = []
         for result in results:
-            result_dict = result.__dict__
-            result_dict.pop('_sa_instance_state', None)
-            results_fmt.append(result_dict)
+            results_fmt.append(result.as_dict())
 
         return json.dumps(results_fmt)
     
@@ -36,7 +34,7 @@ def create_app(engine):
         start = dateutil.parser.parse(request.json['start'])
         end = dateutil.parser.parse(request.json['end'])
         
-        backtest.run_backtest(engine=engine, strategy_name=strategy_name, start=start, end=end)
+        backtest.run_backtest(strategy_name=strategy_name, start=start, end=end)
 
         return {"success": True}
 
