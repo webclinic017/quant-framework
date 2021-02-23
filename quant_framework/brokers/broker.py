@@ -8,11 +8,31 @@ class Broker(ABC):
         pass
 
     @abstractmethod
-    def buy(self, ticker, amount, price):
+    def buy_limit(self, ticker, amount, price):
+        pass
+
+    @abstractmethod
+    def buy_market(self, ticker, amount):
         pass
     
     @abstractmethod
-    def sell(self, ticker, amount, price):
+    def sell_limit(self, ticker, amount, price):
+        pass
+
+    @abstractmethod
+    def sell_market(self, ticker, amount):
+        pass
+
+    @abstractmethod
+    def close_market(self, ticker):
+        pass
+
+    @abstractmethod
+    def adjust_for_dividends(self):
+        pass
+
+    @abstractmethod
+    def get_portfolio_value(self):
         pass
 
     @abstractmethod
@@ -20,5 +40,5 @@ class Broker(ABC):
         pass
 
     @abstractmethod
-    def get_total_cash(self):
+    def get_cash(self):
         pass

@@ -11,12 +11,12 @@ class MockDataProvider(DataProvider):
     name = 'mock_data_provider'
     documentation_url = ''
 
-    def fetch_ticker_data(self, ticker, date):
+    def fetch_ticker_data(self, ticker, req_date):
         '''
         Simulates fetching the price and volume data for a ticker for a specific date
         '''
         return {
-            'date': date.strftime('%Y-%m-%d'),
+            'date': req_date.strftime('%Y-%m-%d'),
             'open': 500,
             'high': 500,
             'low': 500,
@@ -47,3 +47,13 @@ class MockDataProvider(DataProvider):
             })
 
         return results
+
+    def fetch_historical_dividend_data(self, ticker, req_date):
+        '''
+        Simulates a dividend payout from the requested stock ticker
+        '''
+
+        return {
+            'date': req_date.strftime('%Y-%m-%d'),
+            'dividend': 0.01
+        }

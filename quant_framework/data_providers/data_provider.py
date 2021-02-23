@@ -17,9 +17,13 @@ class DataProvider(ABC):
         pass
 
     @abstractmethod
-    def fetch_ticker_data(self, ticker, req_date):
+    def fetch_historical_price_data(self, ticker, req_date):
         pass
 
     @abstractmethod
-    def fetch_ticker_data_range(self, ticker, start, end):
+    def fetch_historical_price_data_range(self, ticker, start, end):
+        pass
+
+    @abstractmethod
+    def fetch_historical_dividend_data(self, ticker, req_date):
         pass

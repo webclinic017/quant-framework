@@ -49,52 +49,21 @@ class Strategy(ABC):
         self.context = context
 
     @final
-    def set_broker(self, broker):
-        self.context['broker'] = broker
-
-    @final
-    def set_data_provider(self, data_provider):
-        self.context['data_provider'] = data_provider
-    
-    @final
-    def fetch_ticker_data(self, ticker):
-        data_provider = self.context['data_provider']
-        timestamp = self.context['timestamp']
-        return data_provider.fetch_ticker_data(ticker, timestamp.date())
-
-    @final
     def buy(self, ticker, amount):
         broker = self.context['broker']
-        ticker_data = self.fetch_ticker_data(ticker)
-        broker.buy(ticker, amount, ticker_data['close'])
+        broker.buy_market(ticker, amount)
     
     @final
     def sell(self, ticker, amount):
         broker = self.context['broker']
-        ticker_data = self.fetch_ticker_data(ticker)
-
-        broker.sell(ticker, amount, ticker_data['close'])
+        broker.sell_market(ticker, amount)
     
     @final
     def close(self, ticker):
         broker = self.context['broker']
-        ticker_data = self.fetch_ticker_data(ticker)
-
-        broker.close(ticker, ticker_data['close'])
+        broker.close_market(ticker)
     
     @final
     def get_portfolio_value(self):
         broker = self.context['broker']
-
-        portfolio = broker.get_portfolio()
-
-        # Calculate portfolio value by summing the value of current possitions
-        # plus the value of your free cash
-
-        value = 0
-        for ticker, size in portfolio.items():
-            ticker_data = self.fetch_ticker_data(ticker)
-            value += ticker_data['close'] * size
-        value += broker.get_total_cash()
-
-        return value
+        return broker.get_portfolio_value()

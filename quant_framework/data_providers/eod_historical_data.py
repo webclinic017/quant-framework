@@ -19,11 +19,11 @@ class EODHistoricalData(DataProvider):
     name = 'eod_historical_data'
     documentation_url = 'https://eodhistoricaldata.com/financial-apis/api-for-historical-data-and-volumes/'
 
-    def __init__(self, api_token):
-        self.api_token = api_token
+    def __init__(self, **kwargs):
+        self.api_token = kwargs['api_token']
         self.endpoint = 'https://eodhistoricaldata.com'
 
-    def fetch_ticker_data(self, ticker, req_date):
+    def fetch_historical_price_data(self, ticker, req_date):
         '''
         Fetches the data for a specified ticker and date
         Also prefetches data for a +/-365 days to quicken subsequent lookups (and keep API usage low)
@@ -35,7 +35,7 @@ class EODHistoricalData(DataProvider):
             start = req_date - timedelta(days=365)
             end = req_date + timedelta(days=365)
 
-            records = self._fetch_range(ticker, start, end)
+            records = self._fetch_price_range(ticker, start, end)
 
             # Write the prefetched records to the DB for fast access in the future
             self._write_records_to_db(ticker, records)
@@ -57,7 +57,7 @@ class EODHistoricalData(DataProvider):
             # Return None if no data was found for the requested date
             return None
 
-    def fetch_ticker_data_range(self, ticker, start, end):
+    def fetch_historical_price_data_range(self, ticker, start, end):
         '''
         Fetches the data for a specified ticker and date range
         Also prefetches data for a +/-365 days to quicken subsequent lookups (and keep API usage low)
@@ -65,7 +65,7 @@ class EODHistoricalData(DataProvider):
         start_new = start - timedelta(days=365)
         end_new = end + timedelta(days=365)
 
-        records = self._fetch_range(ticker, start_new, end_new)
+        records = self._fetch_price_range(ticker, start_new, end_new)
 
         # First, write the prefetched records to the DB for fast access in the future
         self._write_records_to_db(ticker, records)
@@ -77,6 +77,28 @@ class EODHistoricalData(DataProvider):
                 records_selected.append(record)
 
         return records_selected
+
+    def fetch_historical_dividend_data(self, ticker, req_date):
+        s = requests.Session()
+
+        # Retry policy with backoff to ensure we can get around rate limiting
+        retries = Retry(total=5,
+                        backoff_factor=0.1,
+                        status_forcelist=[ 429, 500, 502, 503, 504 ])
+        s.mount('http://', HTTPAdapter(max_retries=retries))
+        s.mount('https://', HTTPAdapter(max_retries=retries))
+
+        url = f'{self.endpoint}/api/div/{ticker}.US'  # TODO: Allow for markets outside of the USA
+        params = {
+            'api_token': self.api_token,
+            'date': req_date.strftime('%Y-%m-%d'),
+            'fmt': 'json'
+        }
+
+        response = s.get(url, params=params)
+
+        r_json = response.json()
+        return r_json
 
     def _fetch_from_db(self, ticker, req_date):
         engine = db.get_engine()
@@ -111,7 +133,7 @@ class EODHistoricalData(DataProvider):
         # If we've found the result, convert to a dict
         return result
 
-    def _fetch_range(self, ticker, start, end):
+    def _fetch_price_range(self, ticker, start, end):
         s = requests.Session()
 
         # Retry policy with backoff to ensure we can get around rate limiting
