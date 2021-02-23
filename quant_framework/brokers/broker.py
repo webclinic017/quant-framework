@@ -28,10 +28,6 @@ class Broker(ABC):
         pass
 
     @abstractmethod
-    def adjust_for_dividends(self):
-        pass
-
-    @abstractmethod
     def get_portfolio_value(self):
         pass
 

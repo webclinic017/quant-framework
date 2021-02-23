@@ -78,28 +78,6 @@ class EODHistoricalData(DataProvider):
 
         return records_selected
 
-    def fetch_historical_dividend_data(self, ticker, req_date):
-        s = requests.Session()
-
-        # Retry policy with backoff to ensure we can get around rate limiting
-        retries = Retry(total=5,
-                        backoff_factor=0.1,
-                        status_forcelist=[ 429, 500, 502, 503, 504 ])
-        s.mount('http://', HTTPAdapter(max_retries=retries))
-        s.mount('https://', HTTPAdapter(max_retries=retries))
-
-        url = f'{self.endpoint}/api/div/{ticker}.US'  # TODO: Allow for markets outside of the USA
-        params = {
-            'api_token': self.api_token,
-            'date': req_date.strftime('%Y-%m-%d'),
-            'fmt': 'json'
-        }
-
-        response = s.get(url, params=params)
-
-        r_json = response.json()
-        return r_json
-
     def _fetch_from_db(self, ticker, req_date):
         engine = db.get_engine()
         Session = sessionmaker(bind=engine)

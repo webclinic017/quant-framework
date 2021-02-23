@@ -23,7 +23,3 @@ class DataProvider(ABC):
     @abstractmethod
     def fetch_historical_price_data_range(self, ticker, start, end):
         pass
-
-    @abstractmethod
-    def fetch_historical_dividend_data(self, ticker, req_date):
-        pass

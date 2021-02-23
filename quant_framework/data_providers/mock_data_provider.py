@@ -47,13 +47,3 @@ class MockDataProvider(DataProvider):
             })
 
         return results
-
-    def fetch_historical_dividend_data(self, ticker, req_date):
-        '''
-        Simulates a dividend payout from the requested stock ticker
-        '''
-
-        return {
-            'date': req_date.strftime('%Y-%m-%d'),
-            'dividend': 0.01
-        }

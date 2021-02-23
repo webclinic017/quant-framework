@@ -80,18 +80,6 @@ class MockBroker(Broker):
         amount = self.portfolio[ticker]
         self.sell_market(ticker, amount)
 
-    def adjust_for_dividends(self):
-        '''
-        Uses the data provider to modify our portfolio for any relevant dividends that occurred for a specific date
-        '''
-        data_provider = self.context['data_provider']  # The provider we will use to fetch stock data
-        current_timestamp = self.context['current_timestamp']  # Either the current datetime in the backtest or the true UTC "now"
-
-        for ticker, amount in self.portfolio.items():
-            dividend_data = data_provider.fetch_historical_dividend_data(ticker, current_timestamp.date())
-            value = dividend_data['unadjustedValue']
-            self.cash += value * amount
-
     def get_portfolio_value(self):
         # Calculate portfolio value by summing the value of current possitions
         # plus the value of your free cash
